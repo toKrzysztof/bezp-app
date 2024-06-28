@@ -65,14 +65,16 @@ async function main() {
   // section - kc
   async function fetchRealmPublicKey() {
     try {
-      const response = await axios.get('http://keycloak:8080/realms/my-realm')
-      return response.data.publicKey;
+      const response = await axios.get('http://keycloak:8080/realms/my-realm');
+      console.log(response);
+      return response.data.public_key;
     } catch (error) {
       console.error('Error fetching certs:', error);
     }
   };
   
   const realmPublicKey = await fetchRealmPublicKey();
+  console.log(realmPublicKey)
 
   const memoryStore = new session.MemoryStore();
   
