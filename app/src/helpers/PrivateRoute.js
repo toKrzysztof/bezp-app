@@ -5,7 +5,7 @@ const PrivateRoute = ({ children }) => {
 
  const isLoggedIn = keycloak.authenticated;
 
- return isLoggedIn ? children : "Forbidden 403";
+ return isLoggedIn ? children : "Log in to access this content.";
 };
 
 export default PrivateRoute;

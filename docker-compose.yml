@@ -1,0 +1,89 @@
+version: '3.9'
+
+services:
+  keycloak:
+    image: quay.io/keycloak/keycloak:25.0.1 
+    ports:
+      - 8080:8080
+    command: -v start-dev --import-realm
+    environment:
+      KEYCLOAK_ADMIN: ${KEYCLOAK_ADMIN}
+      KEYCLOAK_ADMIN_PASSWORD: ${KEYCLOAK_ADMIN_PASSWORD}
+      DB_VENDOR: postgres
+      DB_ADDR: keycloak-postgres
+      DB_PORT: ${POSTGRES_DB_PORT}
+      DB_DATABASE: ${POSTGRES_DB}
+      DB_USER: ${POSTGRES_USER}
+      DB_PASSWORD: ${POSTGRES_PASSWORD}
+    volumes:
+      - ./keycloak:/opt/keycloak/data/import
+    networks:
+      - app-network
+
+
+  dedicated-frontend:
+    build: ./app
+    networks:
+      - app-network
+    ports: 
+      - "5173:80"
+
+
+  foreign-frontend:
+    build: ./fan-frontend-app
+    networks:
+      - app-network
+    ports: 
+      - "4000:80"
+
+
+  mongodb-server:
+    image: mongo
+    environment:
+      MONGO_INITDB_DATABASE: ${MONGO_INITDB_DATABASE}
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_INITDB_ROOT_USERNAME}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_INITDB_ROOT_PASSWORD}
+
+    volumes:
+      - mongodb-vol:/data/db
+      - ./db/mongo.conf:/etc/mongo  
+
+    networks:
+      - app-network
+  
+
+  keycloak-postgres:
+    image: postgres
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    networks:
+      - app-network
+    volumes:
+      - keycloak-db-data:/var/lib/postgresql/data
+
+
+  resource-server:
+    build: ./api
+    networks:
+      - app-network
+    environment:
+      DB_USERNAME: ${MONGO_INITDB_ROOT_USERNAME}
+      DB_PASSWORD: ${MONGO_INITDB_ROOT_PASSWORD}
+      SPOTIFY_CLIENT_ID: ${SPOTIFY_CLIENT_ID} 
+      SPOTIFY_CLIENT_SECRET: ${SPOTIFY_CLIENT_SECRET}
+      TAYLOR_SWIFT_SPOTIFY_ID: ${TAYLOR_SWIFT_SPOTIFY_ID}
+      PORT: ${RESOURCE_SERVER_PORT}
+    depends_on: 
+      - keycloak
+    ports:
+      - 3000:3000
+
+
+networks:
+  app-network:
+
+volumes:
+  keycloak-db-data:
+  mongodb-vol:

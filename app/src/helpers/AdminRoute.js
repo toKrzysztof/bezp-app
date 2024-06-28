@@ -1,11 +1,12 @@
 import { useKeycloak } from "@react-keycloak/web";
 
-const PrivateRoute = ({ children }) => {
+const AdminRoute = ({ children }) => {
  const { keycloak } = useKeycloak();
 
- const isAdmin = keycloak.authenticated && keycloak.hasRealmRole("admin");
+ const isAdmin = keycloak.authenticated && keycloak.hasResourceRole("admin", "my-api");
+//  console.log(keycloak.resourceAccess)
 
- return isAdmin ? children : "Forbidden 403";
+ return (isAdmin ? children : "This page requires administrator role!")
 };
 
-export default PrivateRoute;
+export default AdminRoute;

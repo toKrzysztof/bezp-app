@@ -10,22 +10,32 @@ const Nav = () => {
          <nav className="flex justify-between bg-gray-200 text-blue-800 w-screen">
            <div className="px-5 xl:px-12 py-6 flex w-full items-center">
              <h1 className="text-3xl font-bold font-heading">
-               Keycloak React AUTH.
+                Taylor Swift fanpage
              </h1>
              <ul className="hidden md:flex px-4 mx-auto font-semibold font-heading space-x-12">
                <li>
                  <a className="hover:text-blue-800" href="/">
-                   Home
+                    Home
                  </a>
                </li>
                <li>
-                 <a className="hover:text-blue-800" href="/secured">
-                   Secured Page
+                 <a className="hover:text-blue-800" href="/fans-list">
+                    Fans list
+                 </a>
+               </li>
+               <li>
+                 <a className="hover:text-blue-800" href="/moderator">
+                    Moderator Page
                  </a>
                </li>
                <li>
                  <a className="hover:text-blue-800" href="/admin">
-                   Admin page
+                    Admin page
+                 </a>
+               </li>
+               <li>
+                 <a className="hover:text-blue-800" href="/tf-stats">
+                    Taylor Swift current top 10
                  </a>
                </li>
              </ul>
