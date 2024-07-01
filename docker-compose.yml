@@ -50,6 +50,9 @@ services:
 
     networks:
       - app-network
+
+    ports:
+      - 27017:27017
   
 
   keycloak-postgres:
@@ -64,22 +67,22 @@ services:
       - keycloak-db-data:/var/lib/postgresql/data
 
 
-  resource-server:
-    build: ./api
-    networks:
-      - app-network
-    environment:
-      DB_USERNAME: ${MONGO_INITDB_ROOT_USERNAME}
-      DB_PASSWORD: ${MONGO_INITDB_ROOT_PASSWORD}
-      SPOTIFY_CLIENT_ID: ${SPOTIFY_CLIENT_ID} 
-      SPOTIFY_CLIENT_SECRET: ${SPOTIFY_CLIENT_SECRET}
-      TAYLOR_SWIFT_SPOTIFY_ID: ${TAYLOR_SWIFT_SPOTIFY_ID}
-      PORT: ${RESOURCE_SERVER_PORT}
-      API_SECRET: ${RESOURCE_SERVER_SECRET}
-    depends_on: 
-      - keycloak
-    ports:
-      - 3000:3000
+  # resource-server:
+  #   build: ./api
+  #   networks:
+  #     - app-network
+  #   environment:
+  #     DB_USERNAME: ${MONGO_INITDB_ROOT_USERNAME}
+  #     DB_PASSWORD: ${MONGO_INITDB_ROOT_PASSWORD}
+  #     SPOTIFY_CLIENT_ID: ${SPOTIFY_CLIENT_ID} 
+  #     SPOTIFY_CLIENT_SECRET: ${SPOTIFY_CLIENT_SECRET}
+  #     TAYLOR_SWIFT_SPOTIFY_ID: ${TAYLOR_SWIFT_SPOTIFY_ID}
+  #     PORT: ${RESOURCE_SERVER_PORT}
+  #     API_SECRET: ${RESOURCE_SERVER_SECRET}
+  #   depends_on: 
+  #     - keycloak
+  #   ports:
+  #     - 3000:3000
 
 
 networks:

@@ -18,8 +18,8 @@ function sleep(ms) {
 }
 
 async function main() {
-  console.log('Waiting for 20 seconds...');
-  await sleep(20000);
+  console.log('Waiting for 50 seconds...');
+  await sleep(50000);
   console.log('Starting server...');
 
 
@@ -58,14 +58,14 @@ async function main() {
   // section - db
   const mongoose = require('mongoose');
     
-  mongoose.connect(`mongodb://${username}:${password}@mongodb-server:27017/fans?authSource=admin`).then(res => console.log("Connection to mongodb succesful"));
+  mongoose.connect(`mongodb://${username}:${password}@localhost:27017/fans?authSource=admin`).then(res => console.log("Connection to mongodb succesful"));
   const Fan = mongoose.model('Fan', { name: String, age: Number, fakeFan: Boolean });
   // end section - db
   
   // section - kc
   async function fetchRealmPublicKey() {
     try {
-      const response = await axios.get('http://keycloak:8080/realms/my-realm');
+      const response = await axios.get('http://localhost:8080/realms/my-realm');
       console.log(response);
       return response.data.public_key;
     } catch (error) {
@@ -81,7 +81,7 @@ async function main() {
   const kcConfig = {
     clientId: 'my-api',
     bearerOnly: true,
-    serverUrl: 'http://keycloak:8080',
+    serverUrl: 'http://localhost:8080',
     realm: 'my-realm',
     realmPublicKey
   };
